@@ -4,12 +4,10 @@ import { Injectable } from '@angular/core';
 import { switchMap, map } from 'rxjs';
 import { ProfileService } from './profile.service';
 import { UserDto } from '../models/users/UserDto';
-import {
-  ADD_TO_CART_ENDPOINT,
-  USER_FETCH_BY_ID_ENDPOINT,
-} from '../constants/url-constants';
+import { USER_FETCH_BY_ID_ENDPOINT } from '../constants/url-constants';
 import { ProductService } from './product.service';
 import { CartDto } from '../models/cart/CartDto';
+import { UserService } from './user.service';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -20,7 +18,8 @@ export class CartService {
   constructor(
     private http: HttpClient,
     profileService: ProfileService,
-    private productService: ProductService
+    private productService: ProductService,
+    private userService: UserService
   ) {
     profileService.userSubject$.subscribe((user) => (this.userId = user?.id!));
   }
@@ -40,10 +39,7 @@ export class CartService {
         const currentCart = user.cart || [];
         currentCart.push(newElement);
 
-        return this.http.patch<UserDto>(
-          ADD_TO_CART_ENDPOINT.replace(':id', user.id),
-          { ...user, cart: currentCart }
-        );
+        return this.userService.updateUser({ ...user, cart: currentCart });
       })
     );
   }

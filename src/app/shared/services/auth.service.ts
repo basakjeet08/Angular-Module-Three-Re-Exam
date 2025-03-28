@@ -6,16 +6,17 @@ import {
   FIREBASE_LOGIN_ENDPOINT,
   FIREBASE_REGISTER_ENDPOINT,
   USER_CREATE_ENDPOINT,
-  USER_FETCH_BY_ID_ENDPOINT,
 } from '../constants/url-constants';
 import { switchMap, tap } from 'rxjs';
 import { UserDto, UserRole } from '../models/users/UserDto';
+import { UserService } from './user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   // Injecting the required dependencies
   constructor(
     private http: HttpClient,
+    private userService: UserService,
     private profileService: ProfileService
   ) {}
 
@@ -40,15 +41,8 @@ export class AuthService {
   // This function does the login request
   loginUser(user: { email: string; password: string }) {
     return this.http.post<AuthResponse>(FIREBASE_LOGIN_ENDPOINT, user).pipe(
-      switchMap((response) => this.fetchUser(response)),
-      tap((userData: UserDto) => this.profileService.setUserToLocal(userData))
-    );
-  }
-
-  // This function stores the user in the local storage
-  fetchUser(authResponse: AuthResponse) {
-    return this.http.get<UserDto>(
-      USER_FETCH_BY_ID_ENDPOINT.replace(':id', authResponse.localId)
+      switchMap((response) => this.userService.fetchUserById(response.localId)),
+      tap((userData) => this.profileService.setUserToLocal(userData!))
     );
   }
 }

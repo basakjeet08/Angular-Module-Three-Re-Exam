@@ -20,7 +20,7 @@ export class LoginComponent {
   onLoginClick() {
     this.authService.loginUser(this.userInput).subscribe({
       // Success State
-      next: (data) => this.successEmitter.emit(data.role),
+      next: (data) => this.successEmitter.emit(data?.role),
     });
   }
 }
