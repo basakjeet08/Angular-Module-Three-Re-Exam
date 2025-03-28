@@ -1,9 +1,39 @@
 <div class="card-container row-container auth-container g-24 p-40">
-  <div class="flex-1">
-    <app-login />
+  <div class="flex-1 auth-item">
+    <app-login (onSuccess)="onLoginSuccess($event)" *ngIf="isLoginMode" />
+
+    <div class="card-container col-container g-24" *ngIf="!isLoginMode">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem
+        distinctio cupiditate, molestiae nemo sapiente delectus fugit
+        architecto! Perspiciatis maiores debitis nesciunt, repellat quos
+        recusandae sapiente repellendus neque excepturi vero illo nisi veniam,
+        vitae amet tenetur nulla eaque consectetur numquam qui ducimus aliquid?
+        Labore reiciendis quaerat officiis eaque, ut quasi exercitationem!
+      </p>
+
+      <button class="btn btn-secondary" (click)="toggleMode()">
+        Go to Register page
+      </button>
+    </div>
   </div>
 
-  <div class="flex-1">
-    <app-register />
+  <div class="flex-1 auth-item">
+    <app-register (onSuccess)="onRegistrationSuccess()" *ngIf="!isLoginMode" />
+
+    <div class="card-container col-container g-24" *ngIf="isLoginMode">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem
+        distinctio cupiditate, molestiae nemo sapiente delectus fugit
+        architecto! Perspiciatis maiores debitis nesciunt, repellat quos
+        recusandae sapiente repellendus neque excepturi vero illo nisi veniam,
+        vitae amet tenetur nulla eaque consectetur numquam qui ducimus aliquid?
+        Labore reiciendis quaerat officiis eaque, ut quasi exercitationem!
+      </p>
+
+      <button class="btn btn-secondary" (click)="toggleMode()">
+        Go to Login page
+      </button>
+    </div>
   </div>
 </div>
