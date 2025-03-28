@@ -3,9 +3,17 @@
   width: 100%;
 
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
 
   padding: 24px;
+}
+
+.grid-container {
+  width: 80%;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
   gap: 24px;
 }

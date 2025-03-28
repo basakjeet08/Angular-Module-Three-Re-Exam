@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoaderService } from 'src/app/shared/components/loader/loader.service';
+import { ToastService } from 'src/app/shared/components/toast/toast.service';
 import { ProductDto } from 'src/app/shared/models/product/ProductDto';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { ProductService } from 'src/app/shared/services/product.service';
@@ -17,6 +19,8 @@ export class ProductsComponent {
   constructor(
     private productService: ProductService,
     private cartService: CartService,
+    private loaderService: LoaderService,
+    private toastService: ToastService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -28,17 +32,61 @@ export class ProductsComponent {
 
   // This function Fetches the products
   fetchProducts() {
+    // Starting the loading state
+    this.loaderService.startLoading();
+
+    // Calling the API
     this.productService.fetchAllProducts().subscribe({
-      next: (productList) => (this.productList = productList),
+      // Success State
+      next: (productList) => {
+        this.loaderService.endLoading();
+        this.productList = productList;
+
+        if (productList.length === 0) {
+          this.toastService.showToast({
+            type: 'info',
+            message: 'There are no products to show !!',
+          });
+        } else {
+          this.toastService.showToast({
+            type: 'success',
+            message: 'Product data fetched successfully !!',
+          });
+        }
+      },
+
+      // Error State
+      error: (error: Error) => {
+        this.loaderService.endLoading();
+        this.toastService.showToast({ type: 'error', message: error.message });
+      },
     });
   }
 
   // This function is invoked when the user clicks on the add to cart option
   onAddToCartClick(amount: number, id: string) {
+    // Starting the loading state
+    this.loaderService.startLoading();
+
+    // Calling the Api
     this.cartService.updateCart({ productId: id, amount: amount }).subscribe({
       // Success State
-      next: () =>
-        this.router.navigate(['../', 'cart'], { relativeTo: this.route }),
+      next: () => {
+        this.loaderService.endLoading();
+
+        this.toastService.showToast({
+          type: 'success',
+          message: 'Product Added to cart !!',
+        });
+
+        this.router.navigate(['../', 'cart'], { relativeTo: this.route });
+      },
+
+      // Error State
+      error: (error: Error) => {
+        this.loaderService.endLoading();
+        this.toastService.showToast({ type: 'error', message: error.message });
+      },
     });
   }
 }
