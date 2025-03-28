@@ -34,8 +34,9 @@ export class CartComponent implements OnInit {
   onPlaceOrderClick() {
     this.orderService.placeOrder().subscribe({
       // Success State
-      next: () =>
-        this.router.navigate(['../', 'order'], { relativeTo: this.route }),
+      next: () => {
+        this.router.navigate(['../', 'orders'], { relativeTo: this.route });
+      },
     });
   }
 }
