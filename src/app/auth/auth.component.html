@@ -1,38 +1,73 @@
-<div class="card-container row-container auth-container g-24 p-40">
-  <div class="flex-1 auth-item">
-    <app-login (onSuccess)="onLoginSuccess($event)" *ngIf="isLoginMode" />
+<!-- Idle State -->
+<div class="card-container auth-container">
+  <!-- Login Mask Component -->
+  <div class="auth-item">
+    <!-- Login Component -->
+    <app-login
+      *ngIf="isLoginMode"
+      class="flex-1 p-40 items-center justify-center"
+      (onSuccess)="onLoginSuccess($event)"
+    />
 
-    <div class="card-container col-container g-24" *ngIf="!isLoginMode">
-      <p>
+    <!-- Register Mark Component -->
+    <div
+      *ngIf="!isLoginMode"
+      class="variant-card-container col-container g-32 flex-1 p-24 items-center justify-center z-99"
+    >
+      <h1>Been with us ?</h1>
+
+      <p class="text-center body-text muted-text">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem
         distinctio cupiditate, molestiae nemo sapiente delectus fugit
         architecto! Perspiciatis maiores debitis nesciunt, repellat quos
-        recusandae sapiente repellendus neque excepturi vero illo nisi veniam,
-        vitae amet tenetur nulla eaque consectetur numquam qui ducimus aliquid?
-        Labore reiciendis quaerat officiis eaque, ut quasi exercitationem!
-      </p>
-
-      <button class="btn btn-secondary" (click)="toggleMode()">
-        Go to Register page
-      </button>
-    </div>
-  </div>
-
-  <div class="flex-1 auth-item">
-    <app-register (onSuccess)="onRegistrationSuccess()" *ngIf="!isLoginMode" />
-
-    <div class="card-container col-container g-24" *ngIf="isLoginMode">
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem
-        distinctio cupiditate, molestiae nemo sapiente delectus fugit
-        architecto! Perspiciatis maiores debitis nesciunt, repellat quos
-        recusandae sapiente repellendus neque excepturi vero illo nisi veniam,
-        vitae amet tenetur nulla eaque consectetur numquam qui ducimus aliquid?
-        Labore reiciendis quaerat officiis eaque, ut quasi exercitationem!
       </p>
 
       <button class="btn btn-secondary" (click)="toggleMode()">
         Go to Login page
+      </button>
+    </div>
+  </div>
+
+  <!-- Register Component Mark Container -->
+  <div class="auth-item">
+    <!-- Register Component -->
+    <app-register
+      *ngIf="!isLoginMode"
+      class="flex-1 p-40 items-center justify-center"
+      (onSuccess)="onRegistrationSuccess()"
+    />
+
+    <!-- Login Mask -->
+    <div
+      *ngIf="isLoginMode"
+      class="variant-card-container col-container g-24 flex-1 p-24 items-center justify-center z-99"
+    >
+      <h1>New to Shopify ?</h1>
+
+      <p class="text-center body-text muted-text">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ea
+        doloremque, placeat eum debitis quisquam veritatis ipsam exercitationem
+        inventore vero maxime cum. Sed reiciendis, alias ducimus hic nesciunt
+        sapiente magni.
+      </p>
+
+      <!-- Mock Credentials to Login -->
+      <div class="card-container col-container g-4 p-16">
+        <p class="body-text primary-text">Login Details</p>
+
+        <p class="body-text muted-text">
+          Admin :
+          <span class="accent-text">{{ "admin1@gmail.com -> Anirban" }} </span>
+        </p>
+
+        <p class="body-text muted-text">
+          User :
+          <span class="accent-text">{{ "user1@gmail.com -> Anirban" }} </span>
+        </p>
+      </div>
+
+      <button class="btn btn-secondary" (click)="toggleMode()">
+        Go to Register page
       </button>
     </div>
   </div>
