@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { LoaderService } from 'src/app/shared/components/loader/loader.service';
+import { ToastService } from 'src/app/shared/components/toast/toast.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -14,13 +16,36 @@ export class RegisterComponent {
   @Output('onSuccess') successEmitter = new EventEmitter<void>();
 
   // Injecting the necessary dependencies
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private loaderService: LoaderService,
+    private toastService: ToastService
+  ) {}
 
   // This function is invoked when the user clicks on the register button
   onRegisterClick() {
+    // Starting the loading state
+    this.loaderService.startLoading();
+
+    // Calling the Api
     this.authService.registerUser(this.userInput).subscribe({
       // Success State
-      next: () => this.successEmitter.emit(),
+      next: () => {
+        this.loaderService.endLoading();
+
+        this.toastService.showToast({
+          type: 'success',
+          message: 'User registered successfully !!',
+        });
+
+        this.successEmitter.emit();
+      },
+
+      // Error state
+      error: (error: Error) => {
+        this.loaderService.endLoading();
+        this.toastService.showToast({ type: 'error', message: error.message });
+      },
     });
   }
 }
