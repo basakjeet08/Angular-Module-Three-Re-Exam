@@ -43,8 +43,8 @@ export class OrderService {
 
         // This is the list of product Ids with Amount
         const productListIds = cartItemList.map((item) => {
-          totalPrice += item.amount * item.product.pricePerItem;
-          return new IntermediateOrder(item.product.id, item.amount);
+          totalPrice += item.amount * item.product.pricePerItem!;
+          return new IntermediateOrder(item.product.id!, item.amount);
         });
 
         const order = new OrderDto(

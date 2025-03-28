@@ -1,8 +1,6 @@
-export class ProductDto {
-  constructor(
-    readonly id: string,
-    readonly name: string,
-    readonly amount: number,
-    readonly pricePerItem: number
-  ) {}
+export interface ProductDto {
+  id?: string;
+  name?: string;
+  amount?: number;
+  pricePerItem?: number;
 }

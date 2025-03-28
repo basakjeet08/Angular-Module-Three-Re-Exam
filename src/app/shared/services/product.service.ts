@@ -19,11 +19,7 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   // This function creates a product
-  createProduct(product: {
-    name: string;
-    amount: number | null;
-    pricePerItem: number | null;
-  }) {
+  createProduct(product: ProductDto) {
     return this.http.post<ProductDto>(PRODUCT_CREATE_ENDPOINT, product);
   }
 
@@ -45,20 +41,15 @@ export class ProductService {
   fetchProductByIds(idList: string[]) {
     return this.fetchAllProducts().pipe(
       map((productList) =>
-        productList.filter((product) => idList.includes(product.id))
+        productList.filter((product) => idList.includes(product.id!))
       )
     );
   }
 
   // This function updates the product wth the specific Id
-  updateProductById(product: {
-    id: string;
-    name: string;
-    amount: number | null;
-    pricePerItem: number | null;
-  }) {
+  updateProductById(product: ProductDto) {
     return this.http.patch(
-      PRODUCT_UPDATE_BY_ID_ENDPOINT.replace(':id', product.id),
+      PRODUCT_UPDATE_BY_ID_ENDPOINT.replace(':id', product.id!),
       product
     );
   }

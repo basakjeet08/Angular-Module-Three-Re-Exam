@@ -29,7 +29,7 @@ export class ProductCardComponent {
 
   // This function in invoked when the user clicks on the + button
   onIncreaseClick() {
-    if (this.userAmount < this.product.amount) {
+    if (this.userAmount < this.product.amount!) {
       this.userAmount++;
     }
   }
