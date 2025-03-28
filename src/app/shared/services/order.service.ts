@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { switchMap } from 'rxjs';
 import { ProfileService } from './profile.service';
-import {
-  ORDER_CREATE_ENDPOINT,
-  USER_UPDATE_ENDPOINT,
-} from '../constants/url-constants';
+import { ORDER_CREATE_ENDPOINT } from '../constants/url-constants';
 import { OrderDto } from '../models/order/OrderDto';
 import { UserService } from './user.service';
+import { CartService } from './cart.service';
+import { IntermediateOrder } from '../models/order/IntermediateOrder';
 
 @Injectable({
   providedIn: 'root',
@@ -20,25 +19,33 @@ export class OrderService {
   constructor(
     private http: HttpClient,
     profileService: ProfileService,
-    private userService: UserService
+    private userService: UserService,
+    private cartService: CartService
   ) {
     profileService.userSubject$.subscribe((user) => (this.userId = user?.id!));
   }
 
   // This function takes the current user cart and adds it in the orders
   placeOrder() {
-    return this.userService.fetchUserById(this.userId).pipe(
-      switchMap((user) => {
-        const currentCart = user?.cart || [];
-        let cost = 0;
+    return this.cartService.fetchCartDetails().pipe(
+      // Posting the orders
+      switchMap((cartItemList) => {
+        let totalPrice = 0;
 
-        return this.http.post<OrderDto | null>(
-          ORDER_CREATE_ENDPOINT,
-          new OrderDto('', user!.id, currentCart, cost)
-        );
+        // This is the list of product Ids with Amount
+        const productListIds = cartItemList.map((item) => {
+          totalPrice += item.amount * item.product.pricePerItem;
+          return new IntermediateOrder(item.product.id, item.amount);
+        });
+
+        const order = new OrderDto('', this.userId, productListIds, totalPrice);
+        return this.http.post(ORDER_CREATE_ENDPOINT, order);
       }),
-      switchMap((orderDto) =>
-        this.http.patch(USER_UPDATE_ENDPOINT.replace(':id', this.userId), {
+
+      // Updating the user cart
+      switchMap(() =>
+        this.userService.updateUser({
+          id: this.userId,
           cart: [],
         })
       )

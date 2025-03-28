@@ -30,10 +30,10 @@ export class UserService {
   // This function updates the user
   updateUser(user: {
     id: string;
-    email: string;
-    role: UserRole;
-    cart: IntermediateOrder[];
-    orderList: string[];
+    email?: string;
+    role?: UserRole;
+    cart?: IntermediateOrder[];
+    orderList?: string[];
   }) {
     return this.http
       .patch<UserDto | null>(ADD_TO_CART_ENDPOINT.replace(':id', user.id), user)
