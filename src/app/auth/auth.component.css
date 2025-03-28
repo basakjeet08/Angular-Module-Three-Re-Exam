@@ -1,0 +1,17 @@
+:host {
+  min-height: 100vh;
+  min-width: 100vw;
+
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-container {
+  min-height: 500px;
+  width: 60%;
+}
