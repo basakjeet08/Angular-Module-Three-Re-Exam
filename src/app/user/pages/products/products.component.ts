@@ -25,4 +25,9 @@ export class ProductsComponent {
       next: (productList) => (this.productList = productList),
     });
   }
+
+  // This function is invoked when the user clicks on the add to cart option
+  onAddToCartClick(amount: number, id: string) {
+    console.log(amount, id);
+  }
 }

@@ -2,7 +2,7 @@
   <div class="row-container items-center space">
     <h4>{{ product.name }}</h4>
 
-    <button *ngIf="editAccess" class="btn btn-accent" (click)="onEditClick()">
+    <button *ngIf="isAdmin" class="btn btn-accent" (click)="onEditClick()">
       Edit
     </button>
   </div>
@@ -15,5 +15,20 @@
     <p class="variant-card-container caption-text p-8">
       Price Per Item : {{ product.pricePerItem }}
     </p>
+  </div>
+
+  <!-- Button Container for ordering -->
+  <div class="row-container g-16 items-center" *ngIf="!isAdmin">
+    <button class="btn btn-accent" (click)="onIncreaseClick()">+</button>
+    <p class="primary-text body-text">{{ userAmount }}</p>
+    <button class="btn btn-destructive" (click)="onDecreaseClick()">-</button>
+
+    <button
+      class="btn btn-secondary"
+      *ngIf="userAmount !== 0"
+      (click)="onAddToCartClick()"
+    >
+      Add To Cart
+    </button>
   </div>
 </div>
