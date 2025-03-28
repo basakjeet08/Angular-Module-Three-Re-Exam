@@ -64,12 +64,12 @@ export class ProductsComponent {
   }
 
   // This function is invoked when the user clicks on the add to cart option
-  onAddToCartClick(amount: number, id: string) {
+  onAddToCartClick(amount: number, productId: string) {
     // Starting the loading state
     this.loaderService.startLoading();
 
     // Calling the Api
-    this.cartService.updateCart({ productId: id, amount: amount }).subscribe({
+    this.cartService.updateCart({ productId, amount }).subscribe({
       // Success State
       next: () => {
         this.loaderService.endLoading();

@@ -7,12 +7,10 @@ export enum OrderStatus {
   DELIVERED = 'DELIVERED',
 }
 
-export class OrderDto {
-  constructor(
-    readonly id: string,
-    readonly userId: string,
-    readonly productList: IntermediateOrder[],
-    readonly totalPrice: number,
-    readonly status: OrderStatus
-  ) {}
+export interface OrderDto {
+  id: string;
+  userId: string;
+  productList: IntermediateOrder[];
+  totalPrice: number;
+  status: OrderStatus;
 }

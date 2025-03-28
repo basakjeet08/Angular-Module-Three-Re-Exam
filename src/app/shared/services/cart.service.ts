@@ -5,6 +5,7 @@ import { ProfileService } from './profile.service';
 import { ProductService } from './product.service';
 import { UserService } from './user.service';
 import { CartItemDto } from '../models/cart/CartItemDto';
+import { IntermediateOrder } from '../models/order/IntermediateOrder';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -21,7 +22,7 @@ export class CartService {
   }
 
   // This function adds in the user cart
-  updateCart(newElement: { productId: string; amount: number }) {
+  updateCart(newElement: IntermediateOrder) {
     return this.userService.fetchUserById(this.userId).pipe(
       switchMap((user) => {
         // Adding the new element to the cart

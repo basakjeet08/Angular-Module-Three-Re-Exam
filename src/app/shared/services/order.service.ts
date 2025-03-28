@@ -17,9 +17,7 @@ import {
   mapFirebaseObject,
 } from '../util/firebase-object-mapper';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class OrderService {
   // This is the user id for the current logged in user
   userId: string = '';
@@ -42,18 +40,25 @@ export class OrderService {
         let totalPrice = 0;
 
         // This is the list of product Ids with Amount
-        const productListIds = cartItemList.map((item) => {
+        const productListIds: IntermediateOrder[] = cartItemList.map((item) => {
           totalPrice += item.amount * item.product.pricePerItem!;
-          return new IntermediateOrder(item.product.id!, item.amount);
+
+          const intermediateOrder: IntermediateOrder = {
+            productId: item.product.id!,
+            amount: item.amount,
+          };
+
+          return intermediateOrder;
         });
 
-        const order = new OrderDto(
-          '',
-          this.userId,
-          productListIds,
-          totalPrice,
-          OrderStatus.PLACED
-        );
+        const order: OrderDto = {
+          id: '',
+          userId: this.userId,
+          productList: productListIds,
+          totalPrice: totalPrice,
+          status: OrderStatus.PLACED,
+        };
+
         return this.http.post(ORDER_CREATE_ENDPOINT, order);
       }),
 
