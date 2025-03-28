@@ -25,4 +25,11 @@ export class OrdersListComponent implements OnInit {
       next: (orderList: OrderDto[]) => (this.orderList = orderList),
     });
   }
+
+  // This function is invoked when the user clicks on the move status to next stage button
+  onChangeStatusToNextClick(orderId: string) {
+    this.orderService.updateOrderStatus(orderId).subscribe({
+      next: () => this.fetchOrders(),
+    });
+  }
 }

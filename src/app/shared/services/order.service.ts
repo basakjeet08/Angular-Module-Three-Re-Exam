@@ -5,12 +5,17 @@ import { ProfileService } from './profile.service';
 import {
   ORDER_CREATE_ENDPOINT,
   ORDER_FETCH_ALL_ENDPOINT,
+  ORDER_FETCH_BY_ID_ENDPOINT,
+  ORDER_NEXT_STAGE_ENDPOINT,
 } from '../constants/url-constants';
 import { OrderDto, OrderStatus } from '../models/order/OrderDto';
 import { UserService } from './user.service';
 import { CartService } from './cart.service';
 import { IntermediateOrder } from '../models/order/IntermediateOrder';
-import { mapFirebaseListObject } from '../util/firebase-object-mapper';
+import {
+  mapFirebaseListObject,
+  mapFirebaseObject,
+} from '../util/firebase-object-mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -75,6 +80,35 @@ export class OrderService {
       map((orderDtoList) =>
         orderDtoList.filter((orderDto) => orderDto.userId === this.userId)
       )
+    );
+  }
+
+  // This function fetches the order by the given ID
+  fetchOrderById(orderId: string) {
+    return this.http
+      .get<OrderDto | null>(ORDER_FETCH_BY_ID_ENDPOINT.replace(':id', orderId))
+      .pipe(map((response) => mapFirebaseObject(response, orderId)));
+  }
+
+  // This function fetches the order by id
+  updateOrderStatus(orderId: string) {
+    return this.fetchOrderById(orderId).pipe(
+      switchMap((orderDto) => {
+        let newStatus = OrderStatus.PLACED;
+
+        if (orderDto?.status === OrderStatus.PLACED) {
+          newStatus = OrderStatus.PROCESSING;
+        } else if (orderDto?.status === OrderStatus.PROCESSING) {
+          newStatus = OrderStatus.ON_THE_WAY;
+        } else if (orderDto?.status === OrderStatus.ON_THE_WAY) {
+          newStatus = OrderStatus.DELIVERED;
+        }
+
+        return this.http.patch(
+          ORDER_NEXT_STAGE_ENDPOINT.replace(':id', orderId),
+          { status: newStatus }
+        );
+      })
     );
   }
 }
