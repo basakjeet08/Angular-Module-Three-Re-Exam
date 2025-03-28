@@ -1,1 +1,5 @@
-<p>products works!</p>
+<app-product-card
+  class="w-50"
+  *ngFor="let product of productList"
+  [product]="product"
+/>
