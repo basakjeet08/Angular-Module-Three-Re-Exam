@@ -6,3 +6,6 @@ const FIREBASE_URL =
   'https://angular-module-three-re-exam-default-rtdb.asia-southeast1.firebasedatabase.app';
 export const USER_CREATE_ENDPOINT = `${FIREBASE_URL}/users/:id.json`;
 export const USER_FETCH_BY_ID_ENDPOINT = `${FIREBASE_URL}/users/:id.json`;
+
+export const PRODUCT_CREATE_ENDPOINT = `${FIREBASE_URL}/products.json`;
+export const PRODUCTS_FETCH_ALL_ENDPOINT = `${FIREBASE_URL}/products.json`;
