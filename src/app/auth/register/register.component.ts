@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,10 +11,16 @@ export class RegisterComponent {
   userInput = { email: '', role: 'USER', password: '', confirmPassword: '' };
 
   // This is the Output Emitter
-  @Output('onSuccess') successEmitter = new EventEmitter<string>();
+  @Output('onSuccess') successEmitter = new EventEmitter<void>();
+
+  // Injecting the necessary dependencies
+  constructor(private authService: AuthService) {}
 
   // This function is invoked when the user clicks on the register button
   onRegisterClick() {
-    console.log(this.userInput);
+    this.authService.registerUser(this.userInput).subscribe({
+      // Success State
+      next: () => this.successEmitter.emit(),
+    });
   }
 }

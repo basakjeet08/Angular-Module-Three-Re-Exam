@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +13,14 @@ export class LoginComponent {
   // This is the Output Emitter
   @Output('onSuccess') successEmitter = new EventEmitter<string>();
 
+  // Injecting the required dependencies
+  constructor(private authService: AuthService) {}
+
   // This function is invoked when the user clicks on the login button
   onLoginClick() {
-    console.log(this.userInput);
+    this.authService.loginUser(this.userInput).subscribe({
+      // Success State
+      next: (data) => this.successEmitter.emit(data.role),
+    });
   }
 }
