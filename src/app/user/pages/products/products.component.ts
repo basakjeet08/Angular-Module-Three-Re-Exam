@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductDto } from 'src/app/shared/models/product/ProductDto';
+import { CartService } from 'src/app/shared/services/cart.service';
 import { ProductService } from 'src/app/shared/services/product.service';
 
 @Component({
@@ -12,7 +14,12 @@ export class ProductsComponent {
   productList: ProductDto[] = [];
 
   // Injecting the necessary dependencies
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private cartService: CartService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   // Initial Api calls are done
   ngOnInit(): void {
@@ -28,6 +35,10 @@ export class ProductsComponent {
 
   // This function is invoked when the user clicks on the add to cart option
   onAddToCartClick(amount: number, id: string) {
-    console.log(amount, id);
+    this.cartService.updateCart({ productId: id, amount: amount }).subscribe({
+      // Success State
+      next: () =>
+        this.router.navigate(['../', 'cart'], { relativeTo: this.route }),
+    });
   }
 }

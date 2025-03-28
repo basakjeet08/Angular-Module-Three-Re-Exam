@@ -9,7 +9,7 @@ import {
   USER_FETCH_BY_ID_ENDPOINT,
 } from '../constants/url-constants';
 import { switchMap, tap } from 'rxjs';
-import { UserDto } from '../models/users/UserDto';
+import { UserDto, UserRole } from '../models/users/UserDto';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -29,12 +29,12 @@ export class AuthService {
   // This function puts the user data in the firebase database
   createUser(authResponse: AuthResponse, role: string) {
     const id = authResponse.localId;
+    const userRole = role === UserRole.ADMIN ? UserRole.ADMIN : UserRole.USER;
 
-    return this.http.put<UserDto>(USER_CREATE_ENDPOINT.replace(':id', id), {
-      id: id,
-      email: authResponse.email,
-      role: role,
-    });
+    return this.http.put<UserDto>(
+      USER_CREATE_ENDPOINT.replace(':id', id),
+      new UserDto(id, authResponse.email, userRole, [], [])
+    );
   }
 
   // This function does the login request
