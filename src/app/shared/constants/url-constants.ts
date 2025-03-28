@@ -8,6 +8,7 @@ const FIREBASE_URL =
 // User Endpoints
 export const USER_CREATE_ENDPOINT = `${FIREBASE_URL}/users/:id.json`;
 export const USER_FETCH_BY_ID_ENDPOINT = `${FIREBASE_URL}/users/:id.json`;
+export const USER_UPDATE_ENDPOINT = `${FIREBASE_URL}/users/:id.json`;
 
 // Product Endpoints
 export const PRODUCT_CREATE_ENDPOINT = `${FIREBASE_URL}/products.json`;

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartDto } from 'src/app/shared/models/cart/CartDto';
 import { CartService } from 'src/app/shared/services/cart.service';
+import { OrderService } from 'src/app/shared/services/order.service';
 
 @Component({
   selector: 'app-cart',
@@ -12,7 +14,12 @@ export class CartComponent implements OnInit {
   cartDto: CartDto = new CartDto([], []);
 
   // Injecting the necessary dependencies
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private orderService: OrderService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   // Fetching the current user cart details
   ngOnInit(): void {
@@ -20,6 +27,15 @@ export class CartComponent implements OnInit {
 
     this.cartService.fetchCartDetails().subscribe({
       next: (cartDto) => (this.cartDto = cartDto),
+    });
+  }
+
+  // This function is invoked when the place order button is clicked
+  onPlaceOrderClick() {
+    this.orderService.placeOrder().subscribe({
+      // Success State
+      next: () =>
+        this.router.navigate(['../', 'order'], { relativeTo: this.route }),
     });
   }
 }

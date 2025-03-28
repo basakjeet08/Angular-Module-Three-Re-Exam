@@ -7,6 +7,7 @@ import { UserDto } from '../models/users/UserDto';
 import {
   ORDER_CREATE_ENDPOINT,
   USER_FETCH_BY_ID_ENDPOINT,
+  USER_UPDATE_ENDPOINT,
 } from '../constants/url-constants';
 import { OrderDto } from '../models/order/OrderDto';
 
@@ -40,21 +41,16 @@ export class OrderService {
         const currentCart = user.cart;
         let cost = 0;
 
-        user.cart.forEach((intermediateOrder) =>
-          this.productService
-            .fetchProductById(intermediateOrder.productId)
-            .subscribe({
-              next: (productDto) => {
-                cost = +productDto?.pricePerItem! * intermediateOrder.amount;
-              },
-            })
-        );
-
-        return this.http.post(
+        return this.http.post<OrderDto | null>(
           ORDER_CREATE_ENDPOINT,
           new OrderDto('', user.id, currentCart, cost)
         );
-      })
+      }),
+      switchMap((orderDto) =>
+        this.http.patch(USER_UPDATE_ENDPOINT.replace(':id', this.userId), {
+          cart: [],
+        })
+      )
     );
   }
 }
