@@ -5,14 +5,12 @@ export enum UserRole {
   USER = 'USER',
 }
 
-export class UserDto {
-  constructor(
-    readonly id: string,
-    readonly email: string,
-    readonly role: UserRole,
+export interface UserDto {
+  id: string;
+  email?: string;
+  role?: UserRole;
 
-    // One to One Relationship with cart
-    readonly cart: IntermediateOrder[],
-    readonly orderList: string[]
-  ) {}
+  // One to One Relationship with cart
+  cart?: IntermediateOrder[];
+  orderList?: string[];
 }

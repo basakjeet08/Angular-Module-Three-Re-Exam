@@ -24,13 +24,6 @@
     </p>
   </div>
 
-  <!-- Role Container -->
-  <select name="role" [(ngModel)]="userInput.role">
-    <option *ngFor="let option of ['ADMIN', 'USER']" [value]="option">
-      {{ option | titlecase }}
-    </option>
-  </select>
-
   <!-- Password container -->
   <div class="col-container g-8">
     <input

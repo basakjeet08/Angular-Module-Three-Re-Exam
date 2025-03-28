@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class RegisterComponent {
   // This is the data for the component
-  userInput = { email: '', role: 'USER', password: '', confirmPassword: '' };
+  userInput = { email: '', password: '', confirmPassword: '' };
 
   // This is the Output Emitter
   @Output('onSuccess') successEmitter = new EventEmitter<void>();

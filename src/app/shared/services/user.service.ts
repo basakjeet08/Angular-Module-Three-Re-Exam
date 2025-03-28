@@ -5,6 +5,7 @@ import { UserDto, UserRole } from '../models/users/UserDto';
 import { IntermediateOrder } from '../models/order/IntermediateOrder';
 import {
   ADD_TO_CART_ENDPOINT,
+  USER_CREATE_ENDPOINT,
   USER_FETCH_BY_ID_ENDPOINT,
 } from '../constants/url-constants';
 import { map } from 'rxjs';
@@ -18,6 +19,17 @@ export class UserService {
   // Injecting the required dependencies
   constructor(private http: HttpClient, profileService: ProfileService) {
     profileService.userSubject$.subscribe((user) => (this.userId = user?.id!));
+  }
+
+  // This function puts the user data in the firebase database
+  createUser(user: UserDto) {
+    // This is the new user object
+    user = { ...user, role: UserRole.USER };
+
+    return this.http.put<UserDto>(
+      USER_CREATE_ENDPOINT.replace(':id', user.id),
+      user
+    );
   }
 
   // This function fetch the user
