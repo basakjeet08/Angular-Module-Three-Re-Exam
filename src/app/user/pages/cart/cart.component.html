@@ -3,7 +3,9 @@
   *ngFor="let item of cartItems"
 >
   <h3>{{ item.product.name }}</h3>
-  <p class="variant-card-container p-8">Amount : {{ item.amount }}</p>
+  <p class="variant-card-container caption-text p-8 accent-text">
+    Amount : {{ item.amount }}
+  </p>
 </div>
 
 <button class="btn btn-primary" (click)="onPlaceOrderClick()">
