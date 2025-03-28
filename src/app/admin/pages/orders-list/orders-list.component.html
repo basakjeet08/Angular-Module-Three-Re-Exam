@@ -1,1 +1,12 @@
-<p>orders-list works!</p>
+<div
+  class="card-container row-container p-24 g-24 w-50 items-center space"
+  *ngFor="let order of orderList"
+>
+  <h3>{{ order.id }}</h3>
+  <div class="row-container g-16">
+    <p class="variant-card-container p-8">Amount : {{ order.totalPrice }}</p>
+    <p class="variant-card-container p-8">
+      Status : {{ order.status | titlecase }}
+    </p>
+  </div>
+</div>

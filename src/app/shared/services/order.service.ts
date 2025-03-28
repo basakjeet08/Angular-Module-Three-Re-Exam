@@ -6,7 +6,7 @@ import {
   ORDER_CREATE_ENDPOINT,
   ORDER_FETCH_ALL_ENDPOINT,
 } from '../constants/url-constants';
-import { OrderDto } from '../models/order/OrderDto';
+import { OrderDto, OrderStatus } from '../models/order/OrderDto';
 import { UserService } from './user.service';
 import { CartService } from './cart.service';
 import { IntermediateOrder } from '../models/order/IntermediateOrder';
@@ -42,7 +42,13 @@ export class OrderService {
           return new IntermediateOrder(item.product.id, item.amount);
         });
 
-        const order = new OrderDto('', this.userId, productListIds, totalPrice);
+        const order = new OrderDto(
+          '',
+          this.userId,
+          productListIds,
+          totalPrice,
+          OrderStatus.PLACED
+        );
         return this.http.post(ORDER_CREATE_ENDPOINT, order);
       }),
 
