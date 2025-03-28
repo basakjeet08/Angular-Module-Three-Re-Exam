@@ -1,6 +1,6 @@
 <div class="card-container col-container g-16 p-24">
   <div class="row-container items-center space">
-    <h4>{{ product.name }}</h4>
+    <h2>{{ product.name }}</h2>
 
     <button *ngIf="isAdmin" class="btn btn-accent" (click)="onEditClick()">
       Edit
@@ -8,11 +8,11 @@
   </div>
 
   <div class="row-container g-16">
-    <p class="variant-card-container caption-text p-8">
+    <p class="variant-card-container caption-text p-8 accent-text">
       Amount : {{ product.amount }}
     </p>
 
-    <p class="variant-card-container caption-text p-8">
+    <p class="variant-card-container caption-text p-8 secondary-text">
       Price Per Item : {{ product.pricePerItem }}
     </p>
   </div>
