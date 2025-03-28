@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { switchMap } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 import { ProfileService } from './profile.service';
-import { ORDER_CREATE_ENDPOINT } from '../constants/url-constants';
+import {
+  ORDER_CREATE_ENDPOINT,
+  ORDER_FETCH_ALL_ENDPOINT,
+} from '../constants/url-constants';
 import { OrderDto } from '../models/order/OrderDto';
 import { UserService } from './user.service';
 import { CartService } from './cart.service';
 import { IntermediateOrder } from '../models/order/IntermediateOrder';
+import { mapFirebaseListObject } from '../util/firebase-object-mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +52,22 @@ export class OrderService {
           id: this.userId,
           cart: [],
         })
+      )
+    );
+  }
+
+  // This function fetches all the orders
+  fetchAllOrders() {
+    return this.http
+      .get<{ [key: string]: OrderDto }>(ORDER_FETCH_ALL_ENDPOINT)
+      .pipe(map((response) => mapFirebaseListObject(response)));
+  }
+
+  // This function fetches the orders of the current user
+  fetchOrderByCurrentUser() {
+    return this.fetchAllOrders().pipe(
+      map((orderDtoList) =>
+        orderDtoList.filter((orderDto) => orderDto.userId === this.userId)
       )
     );
   }

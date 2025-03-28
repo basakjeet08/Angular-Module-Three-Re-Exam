@@ -22,3 +22,4 @@ export const ADD_TO_CART_ENDPOINT = `${FIREBASE_URL}/users/:id.json`;
 // Order Endpoints
 export const ORDER_CREATE_ENDPOINT = `${FIREBASE_URL}/orders.json`;
 export const ORDER_FETCH_BY_ID_ENDPOINT = `${FIREBASE_URL}/orders/:id.json`;
+export const ORDER_FETCH_ALL_ENDPOINT = `${FIREBASE_URL}/orders.json`;
