@@ -31,4 +31,9 @@ export class ProfileService {
     localStorage.setItem(this.USER_DATA_KEY, JSON.stringify(user));
     this.userSubject.next(user);
   }
+
+  // This function logs out the user
+  logout() {
+    localStorage.removeItem(this.USER_DATA_KEY);
+  }
 }

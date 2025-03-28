@@ -1,0 +1,11 @@
+:host {
+  width: 100%;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.space {
+  justify-content: space-between;
+}
