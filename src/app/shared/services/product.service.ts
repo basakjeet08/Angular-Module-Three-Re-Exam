@@ -41,6 +41,15 @@ export class ProductService {
       .pipe(map((response) => mapFirebaseObject(response, id)));
   }
 
+  // This function fetches all the products with the specific list of ids
+  fetchProductByIds(idList: string[]) {
+    return this.fetchAllProducts().pipe(
+      map((productList) =>
+        productList.filter((product) => idList.includes(product.id))
+      )
+    );
+  }
+
   // This function updates the product wth the specific Id
   updateProductById(product: {
     id: string;

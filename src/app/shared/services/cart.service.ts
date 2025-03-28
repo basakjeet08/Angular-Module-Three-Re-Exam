@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { switchMap } from 'rxjs';
+import { switchMap, map } from 'rxjs';
 import { ProfileService } from './profile.service';
 import { UserDto } from '../models/users/UserDto';
 import {
   ADD_TO_CART_ENDPOINT,
   USER_FETCH_BY_ID_ENDPOINT,
 } from '../constants/url-constants';
+import { ProductService } from './product.service';
+import { CartDto } from '../models/cart/CartDto';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -15,7 +17,11 @@ export class CartService {
   userId: string = '';
 
   // Injecting the required dependencies
-  constructor(private http: HttpClient, profileService: ProfileService) {
+  constructor(
+    private http: HttpClient,
+    profileService: ProfileService,
+    private productService: ProductService
+  ) {
     profileService.userSubject$.subscribe((user) => (this.userId = user?.id!));
   }
 
@@ -37,6 +43,24 @@ export class CartService {
         return this.http.patch<UserDto>(
           ADD_TO_CART_ENDPOINT.replace(':id', user.id),
           { ...user, cart: currentCart }
+        );
+      })
+    );
+  }
+
+  // This function fetches the current user cart details along with Product Details
+  fetchCartDetails() {
+    return this.fetchUser().pipe(
+      switchMap((userData) => {
+        const cartProducts = userData.cart.map((item) => item.productId);
+        return this.productService.fetchProductByIds(cartProducts).pipe(
+          map(
+            (productList) =>
+              new CartDto(
+                productList,
+                userData.cart.map((item) => item.amount)
+              )
+          )
         );
       })
     );
