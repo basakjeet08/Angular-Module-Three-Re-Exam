@@ -9,6 +9,7 @@ import { ProductsAddComponent } from './pages/products-add/products-add.componen
 import { OrdersListComponent } from './pages/orders-list/orders-list.component';
 import { adminGuard } from './guards/admin.guard';
 import { authGuard } from '../shared/guard/auth.guard';
+import { FormsModule } from '@angular/forms';
 
 // These are the routes for the admin module
 const routes: Routes = [
@@ -34,6 +35,11 @@ const routes: Routes = [
     ProductsAddComponent,
     OrdersListComponent,
   ],
-  imports: [CommonModule, SharedModule, RouterModule.forChild(routes)],
+  imports: [
+    CommonModule,
+    SharedModule,
+    RouterModule.forChild(routes),
+    FormsModule,
+  ],
 })
 export class AdminModule {}

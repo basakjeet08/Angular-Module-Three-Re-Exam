@@ -1,1 +1,70 @@
-<p>products-add works!</p>
+<form
+  class="card-container col-container g-24 p-40 h-full"
+  (ngSubmit)="onSubmitClick()"
+  #formContainer="ngForm"
+>
+  <h1>Product Form</h1>
+
+  <!-- Name container -->
+  <div class="col-container g-8">
+    <input
+      type="text"
+      name="name"
+      placeholder="Set the Name"
+      required
+      [(ngModel)]="userInput.name"
+      #name="ngModel"
+    />
+
+    <!-- Error Text for name -->
+    <p *ngIf="name.touched && name.invalid" class="error-text caption-text">
+      Please Enter a valid name !!
+    </p>
+  </div>
+
+  <!-- Amount container -->
+  <div class="col-container g-8">
+    <input
+      type="number"
+      name="amount"
+      placeholder="Set the Amount"
+      required
+      [(ngModel)]="userInput.amount"
+      #amount="ngModel"
+    />
+
+    <!-- Error Text for amount -->
+    <p *ngIf="amount.touched && amount.invalid" class="error-text caption-text">
+      Please Enter a valid amount !!
+    </p>
+  </div>
+
+  <!-- Price Per Item container -->
+  <div class="col-container g-8">
+    <input
+      type="number"
+      name="pricePerItem"
+      placeholder="Set the Amount"
+      required
+      [(ngModel)]="userInput.pricePerItem"
+      #pricePerItem="ngModel"
+    />
+
+    <!-- Error Text for amount -->
+    <p
+      *ngIf="pricePerItem.touched && pricePerItem.invalid"
+      class="error-text caption-text"
+    >
+      Please Enter a valid price Per Item !!
+    </p>
+  </div>
+
+  <!-- Button for loggin in -->
+  <button
+    class="btn btn-primary"
+    type="submit"
+    [disabled]="formContainer.invalid"
+  >
+    Submit
+  </button>
+</form>
