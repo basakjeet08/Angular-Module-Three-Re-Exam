@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ProfileService } from './profile.service';
 import { UserDto, UserRole } from '../models/users/UserDto';
-import { IntermediateOrder } from '../models/order/IntermediateOrder';
 import {
   ADD_TO_CART_ENDPOINT,
   USER_CREATE_ENDPOINT,
@@ -40,13 +39,7 @@ export class UserService {
   }
 
   // This function updates the user
-  updateUser(user: {
-    id: string;
-    email?: string;
-    role?: UserRole;
-    cart?: IntermediateOrder[];
-    orderList?: string[];
-  }) {
+  updateUser(user: UserDto) {
     return this.http
       .patch<UserDto | null>(ADD_TO_CART_ENDPOINT.replace(':id', user.id), user)
       .pipe(map((response) => mapFirebaseObject(response, this.userId)));

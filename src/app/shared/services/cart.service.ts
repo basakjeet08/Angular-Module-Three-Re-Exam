@@ -6,6 +6,7 @@ import { ProductService } from './product.service';
 import { UserService } from './user.service';
 import { CartItemDto } from '../models/cart/CartItemDto';
 import { IntermediateOrder } from '../models/order/IntermediateOrder';
+import { ProductDto } from '../models/product/ProductDto';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -35,11 +36,9 @@ export class CartService {
 
         if (intermediate) {
           currentCart = currentCart.map((item) => {
-            if (item.productId === newElement.productId) {
-              return { ...item, amount: item.amount + newElement.amount };
-            } else {
-              return { ...item };
-            }
+            return item.productId === newElement.productId
+              ? { ...item, amount: item.amount + newElement.amount }
+              : { ...item };
           });
         } else {
           currentCart.push(newElement);
@@ -60,10 +59,16 @@ export class CartService {
         return this.productService
           .fetchProductByIds(cartProduct.map((item) => item.productId)!)
           .pipe(
-            map((productList, index) =>
-              productList.map(
-                (product) => new CartItemDto(product, cartProduct[index].amount)
-              )
+            map((productList: ProductDto[], index: number) =>
+              productList.map((product: ProductDto) => {
+                // Cart Item Dto
+                const cartItem: CartItemDto = {
+                  product: product,
+                  amount: cartProduct[index].amount,
+                };
+
+                return cartItem;
+              })
             )
           );
       })

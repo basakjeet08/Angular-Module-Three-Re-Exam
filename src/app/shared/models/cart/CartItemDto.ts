@@ -1,5 +1,6 @@
 import { ProductDto } from '../product/ProductDto';
 
-export class CartItemDto {
-  constructor(readonly product: ProductDto, readonly amount: number) {}
+export interface CartItemDto {
+  product: ProductDto;
+  amount: number;
 }
