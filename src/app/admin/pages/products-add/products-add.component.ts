@@ -36,8 +36,6 @@ export class ProductsAddComponent implements OnInit {
   fetchProductDetails() {
     this.productService.fetchProductById(this.userInput.id).subscribe({
       next: (product: ProductDto | null) => {
-        console.log(product);
-
         if (!product) {
           alert('The provided Product Id is wrong');
           this.location.back();
