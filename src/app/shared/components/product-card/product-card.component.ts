@@ -12,7 +12,8 @@ export class ProductCardComponent {
   // These are the value for the component
   @Input('product') product!: ProductDto;
   @Output('onEditClick') editEmitter = new EventEmitter<string>();
-  @Output('onAddToCartClick') cartEmitter = new EventEmitter<number>();
+  @Output('onCounterButtonClick') counterEmitter = new EventEmitter<number>();
+  @Output('onDeleteClick') deleteEmitter = new EventEmitter<string>();
 
   isAdmin = false;
   userAmount = 0;
@@ -27,9 +28,14 @@ export class ProductCardComponent {
     this.editEmitter.emit(this.product.id);
   }
 
+  // This function is invoked when the user clicks on the delete button
+  onDeleteClick() {
+    this.deleteEmitter.emit(this.product.id!);
+  }
+
   // This function in invoked when the user clicks on the + button
   onIncreaseClick() {
-    if (this.userAmount < this.product.amount!) {
+    if (this.userAmount < this.product.amount! || this.isAdmin) {
       this.userAmount++;
     }
   }
@@ -42,7 +48,7 @@ export class ProductCardComponent {
   }
 
   // This function in invoked when the user clicks on the Add to Cart button
-  onAddToCartClick() {
-    this.cartEmitter.emit(this.userAmount);
+  onCounterButtonClick() {
+    this.counterEmitter.emit(this.userAmount);
   }
 }

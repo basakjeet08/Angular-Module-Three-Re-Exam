@@ -2,9 +2,13 @@
   <div class="row-container items-center space">
     <h2>{{ product.name }}</h2>
 
-    <button *ngIf="isAdmin" class="btn btn-accent" (click)="onEditClick()">
-      Edit
-    </button>
+    <!-- Button Container -->
+    <div class="row-container g-16" *ngIf="isAdmin">
+      <button class="btn btn-accent" (click)="onEditClick()">Edit</button>
+      <button class="btn btn-destructive" (click)="onDeleteClick()">
+        Delete
+      </button>
+    </div>
   </div>
 
   <div class="row-container g-16">
@@ -18,17 +22,19 @@
   </div>
 
   <!-- Button Container for ordering -->
-  <div class="row-container g-16 items-center" *ngIf="!isAdmin">
-    <button class="btn btn-accent" (click)="onIncreaseClick()">+</button>
-    <p class="primary-text body-text">{{ userAmount }}</p>
-    <button class="btn btn-destructive" (click)="onDecreaseClick()">-</button>
+  <div class="row-container g-16 items-center">
+    <button class="btn btn-accent" (click)="onIncreaseClick()">Add</button>
+    <p class="primary-text body-text variant-card-container p-8">
+      {{ userAmount }}
+    </p>
+    <button class="btn btn-destructive" (click)="onDecreaseClick()">Sub</button>
 
     <button
       class="btn btn-secondary"
       *ngIf="userAmount !== 0"
-      (click)="onAddToCartClick()"
+      (click)="onCounterButtonClick()"
     >
-      Add To Cart
+      {{ isAdmin ? "Add to Inventory" : "Add To Cart" }}
     </button>
   </div>
 </div>

@@ -15,6 +15,7 @@ export const PRODUCT_CREATE_ENDPOINT = `${FIREBASE_URL}/products.json`;
 export const PRODUCTS_FETCH_ALL_ENDPOINT = `${FIREBASE_URL}/products.json`;
 export const PRODUCT_FETCH_BY_ID_ENDPOINT = `${FIREBASE_URL}/products/:id.json`;
 export const PRODUCT_UPDATE_BY_ID_ENDPOINT = `${FIREBASE_URL}/products/:id.json`;
+export const PRODUCT_DELETE_ENDPOINT = `${FIREBASE_URL}/products/:id.json`;
 
 // Cart Endpoints
 export const ADD_TO_CART_ENDPOINT = `${FIREBASE_URL}/users/:id.json`;

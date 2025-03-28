@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   PRODUCT_CREATE_ENDPOINT,
+  PRODUCT_DELETE_ENDPOINT,
   PRODUCT_FETCH_BY_ID_ENDPOINT,
   PRODUCT_UPDATE_BY_ID_ENDPOINT,
   PRODUCTS_FETCH_ALL_ENDPOINT,
@@ -52,5 +53,10 @@ export class ProductService {
       PRODUCT_UPDATE_BY_ID_ENDPOINT.replace(':id', product.id!),
       product
     );
+  }
+
+  // This function deletes the product by id
+  deleteById(productId: string) {
+    return this.http.delete(PRODUCT_DELETE_ENDPOINT.replace(':id', productId));
   }
 }

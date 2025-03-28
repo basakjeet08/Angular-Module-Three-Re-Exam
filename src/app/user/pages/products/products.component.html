@@ -2,5 +2,5 @@
   class="w-50"
   *ngFor="let product of productList"
   [product]="product"
-  (onAddToCartClick)="onAddToCartClick($event, product.id!)"
+  (onCounterButtonClick)="onAddToCartClick($event, product.id!)"
 />

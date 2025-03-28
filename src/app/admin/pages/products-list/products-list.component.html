@@ -1,6 +1,9 @@
+<!-- Products Card for each item -->
 <app-product-card
   class="w-50"
   *ngFor="let product of productList"
   [product]="product"
   (onEditClick)="onEditClick($event)"
+  (onCounterButtonClick)="onCounterButtonClick($event, product)"
+  (onDeleteClick)="onDeleteClick($event)"
 />
