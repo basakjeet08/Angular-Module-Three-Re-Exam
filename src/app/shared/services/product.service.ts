@@ -2,11 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   PRODUCT_CREATE_ENDPOINT,
+  PRODUCT_FETCH_BY_ID_ENDPOINT,
+  PRODUCT_UPDATE_BY_ID_ENDPOINT,
   PRODUCTS_FETCH_ALL_ENDPOINT,
 } from '../constants/url-constants';
 import { ProductDto } from '../models/product/ProductDto';
 import { map } from 'rxjs';
-import { mapFirebaseListObject } from '../util/firebase-object-mapper';
+import {
+  mapFirebaseListObject,
+  mapFirebaseObject,
+} from '../util/firebase-object-mapper';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -27,5 +32,25 @@ export class ProductService {
     return this.http
       .get<{ [key: string]: ProductDto }>(PRODUCTS_FETCH_ALL_ENDPOINT)
       .pipe(map((response) => mapFirebaseListObject(response)));
+  }
+
+  // This function fetches only the product with the given id
+  fetchProductById(id: string) {
+    return this.http
+      .get<ProductDto | null>(PRODUCT_FETCH_BY_ID_ENDPOINT.replace(':id', id))
+      .pipe(map((response) => mapFirebaseObject(response, id)));
+  }
+
+  // This function updates the product wth the specific Id
+  updateProductById(product: {
+    id: string;
+    name: string;
+    amount: number | null;
+    pricePerItem: number | null;
+  }) {
+    return this.http.patch(
+      PRODUCT_UPDATE_BY_ID_ENDPOINT.replace(':id', product.id),
+      product
+    );
   }
 }
