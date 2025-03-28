@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CartDto } from 'src/app/shared/models/cart/CartDto';
+import { CartItemDto } from 'src/app/shared/models/cart/CartItemDto';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { OrderService } from 'src/app/shared/services/order.service';
 
@@ -11,7 +11,7 @@ import { OrderService } from 'src/app/shared/services/order.service';
 })
 export class CartComponent implements OnInit {
   // This is the values for this component
-  cartDto: CartDto = new CartDto([], []);
+  cartItems: CartItemDto[] = [];
 
   // Injecting the necessary dependencies
   constructor(
@@ -26,7 +26,7 @@ export class CartComponent implements OnInit {
     this.cartService.fetchCartDetails();
 
     this.cartService.fetchCartDetails().subscribe({
-      next: (cartDto) => (this.cartDto = cartDto),
+      next: (cartItems) => (this.cartItems = cartItems),
     });
   }
 

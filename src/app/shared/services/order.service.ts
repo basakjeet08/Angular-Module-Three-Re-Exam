@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { switchMap } from 'rxjs';
 import { ProfileService } from './profile.service';
-import { ProductService } from './product.service';
-import { UserDto } from '../models/users/UserDto';
 import {
   ORDER_CREATE_ENDPOINT,
-  USER_FETCH_BY_ID_ENDPOINT,
   USER_UPDATE_ENDPOINT,
 } from '../constants/url-constants';
 import { OrderDto } from '../models/order/OrderDto';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,28 +20,21 @@ export class OrderService {
   constructor(
     private http: HttpClient,
     profileService: ProfileService,
-    private productService: ProductService
+    private userService: UserService
   ) {
     profileService.userSubject$.subscribe((user) => (this.userId = user?.id!));
   }
 
-  // This function fetches the user from firebase
-  fetchUser() {
-    return this.http.get<UserDto>(
-      USER_FETCH_BY_ID_ENDPOINT.replace(':id', this.userId)
-    );
-  }
-
   // This function takes the current user cart and adds it in the orders
   placeOrder() {
-    return this.fetchUser().pipe(
+    return this.userService.fetchUserById(this.userId).pipe(
       switchMap((user) => {
-        const currentCart = user.cart;
+        const currentCart = user?.cart || [];
         let cost = 0;
 
         return this.http.post<OrderDto | null>(
           ORDER_CREATE_ENDPOINT,
-          new OrderDto('', user.id, currentCart, cost)
+          new OrderDto('', user!.id, currentCart, cost)
         );
       }),
       switchMap((orderDto) =>

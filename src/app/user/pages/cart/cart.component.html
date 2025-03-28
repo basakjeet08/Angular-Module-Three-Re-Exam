@@ -1,9 +1,9 @@
 <div
   class="card-container row-container p-24 g-24 w-50 items-center space"
-  *ngFor="let product of cartDto.productList; let i = index"
+  *ngFor="let item of cartItems"
 >
-  <h3>{{ product.name }}</h3>
-  <p class="variant-card-container p-8">Amount : {{ cartDto.amountList[i] }}</p>
+  <h3>{{ item.product.name }}</h3>
+  <p class="variant-card-container p-8">Amount : {{ item.amount }}</p>
 </div>
 
 <button class="btn btn-primary" (click)="onPlaceOrderClick()">

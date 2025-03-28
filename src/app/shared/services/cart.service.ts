@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { switchMap, map } from 'rxjs';
 import { ProfileService } from './profile.service';
 import { ProductService } from './product.service';
-import { CartDto } from '../models/cart/CartDto';
 import { UserService } from './user.service';
+import { CartItemDto } from '../models/cart/CartItemDto';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -54,16 +54,17 @@ export class CartService {
     return this.userService.fetchUserById(this.userId).pipe(
       switchMap((userData) => {
         const userCart = userData?.cart || [];
-        const cartProducts = userCart.map((item) => item.productId);
-        return this.productService.fetchProductByIds(cartProducts!).pipe(
-          map(
-            (productList) =>
-              new CartDto(
-                productList,
-                userCart.map((item) => item.amount)
+        const cartProduct = userCart || [];
+
+        return this.productService
+          .fetchProductByIds(cartProduct.map((item) => item.productId)!)
+          .pipe(
+            map((productList, index) =>
+              productList.map(
+                (product) => new CartItemDto(product, cartProduct[index].amount)
               )
-          )
-        );
+            )
+          );
       })
     );
   }
